@@ -20,7 +20,7 @@ class Tracker(models.Model):
     class Meta:
         unique_together = ('user', 'project',)
 
-    def get_total_seconds(self):
+    def get_total_seconds(self) -> int:
         """
         Determines the total number of seconds between the starting and
         ending times of this entry. If the entry is paused, the end_time is
@@ -43,7 +43,7 @@ class Tracker(models.Model):
             seconds = delta.seconds - self.get_paused_seconds()
         return seconds + (delta.days * 86400)
 
-    def get_paused_seconds(self):
+    def get_paused_seconds(self) -> int:
         """
         Returns the total seconds that this entry has been paused. If the
         entry is currently paused, then the additional seconds between
@@ -58,7 +58,7 @@ class Tracker(models.Model):
         return self.seconds_paused
 
     @property
-    def total_hours(self):
+    def total_hours(self) -> int:
         """
         Determined the total number of hours worked in this entry
         """
@@ -69,29 +69,20 @@ class Tracker(models.Model):
         return total
 
     @property
-    def is_paused(self):
+    def is_paused(self) -> bool:
         """
         Determine whether or not this entry is paused
         """
         return bool(self.pause_time)
 
-    def pause(self):
+    def pause(self) -> None:
         """
         If this entry is not paused, pause it.
         """
         if not self.is_paused:
             self.pause_time = timezone.now()
 
-    def pause_all(self):
-        """
-        Pause all open entries
-        """
-        entries = self.user.timepiece_entries.filter(end_time__isnull=True)
-        for entry in entries:
-            entry.pause()
-            entry.save()
-
-    def unpause(self, date=None):
+    def unpause(self, date=None) -> None:
         if self.is_paused:
             if not date:
                 date = timezone.now()
@@ -99,7 +90,7 @@ class Tracker(models.Model):
             self.seconds_paused += delta.seconds
             self.pause_time = None
 
-    def toggle_paused(self):
+    def toggle_paused(self) -> None:
         """
         Toggle the paused state of this entry.  If the entry is already paused,
         it will be unpaused; if it is not paused, it will be paused.
@@ -110,7 +101,7 @@ class Tracker(models.Model):
             self.pause()
 
     @property
-    def is_closed(self):
+    def is_closed(self) -> bool:
         """
         Determine whether this entry has been closed or not
         """
