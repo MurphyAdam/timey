@@ -1,4 +1,3 @@
-import arrow
 import datetime
 
 from django.db import models
@@ -25,15 +24,11 @@ class Project(models.Model):
         ordering = ['name']
 
     @property
-    def created_on_arrow(self):
-        return arrow.get(self.created_on).humanize()
-
-    @property
-    def reached_deadline(self):
+    def reached_deadline(self) -> bool:
         return datetime.date.today() > self.dead_line
 
     @property
-    def days_to_deadline(self):
+    def days_to_deadline(self) -> int:
         if self.reached_deadline:
             return -1
         return (self.dead_line - self.created_date).days
