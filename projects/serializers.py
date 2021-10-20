@@ -32,7 +32,7 @@ class ProjectWriteSerializer(serializers.ModelSerializer):
     # We receive list of user ids (ids[int] <= 0) by which we assign
     # users to a project
     assigned_to = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.all(), many=True)
+        queryset=User.objects.all(), many=True, required=False)
 
     class Meta:
         model = Project
