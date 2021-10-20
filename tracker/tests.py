@@ -51,7 +51,7 @@ class TrackerTests(APITestCase):
                                          start_time=start_time)
         return tracker
 
-    def test_create_project_without_api(self):
+    def test_create_tracker_entry_without_api(self):
         """
         Ensure we can create a new tracker object.
         """
