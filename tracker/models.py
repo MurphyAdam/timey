@@ -81,7 +81,7 @@ class Tracker(models.Model):
         """
         Determine whether or not this entry is paused
         """
-        return bool(self.pause_time)
+        return (bool(self.pause_time) or self.timer_state == TIMER_STATE[0][0])
 
     def pause(self) -> None:
         """
