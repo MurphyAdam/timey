@@ -25,7 +25,7 @@ Test credintials:
 - account type: Regular user (non-admin/ staff previliges)
 
     email: user1@test.com
-    password: @user1234
+    password: [Hu889-0]-
 
 ## Tests
 
