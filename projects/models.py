@@ -10,7 +10,8 @@ class Project(models.Model):
     name = models.CharField(max_length=128)
     slug = models.SlugField(blank=True)
     description = models.TextField(null=True, blank=True)
-    assigned_to = models.ManyToManyField(User)
+    assigned_to = models.ManyToManyField(
+        User, blank=True, related_name="assignees")
     status = models.CharField(
         max_length=32, choices=status, default=status[0][0])
     priority = models.CharField(
