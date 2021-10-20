@@ -2,14 +2,18 @@ from projects.models import Project
 from django.db import models
 from django.utils import timezone
 from accounts.models import User
-from .constants import STATUSES
+from .constants import STATUSES, TIMER_STATE
 
 
 class Tracker(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="tracker_entries")
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name="tracker_entries")
     status = models.CharField(
         max_length=32, choices=STATUSES, default=STATUSES[0][0])
+    timer_state = models.CharField(
+        max_length=32, choices=TIMER_STATE, default=TIMER_STATE[0][0])
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(blank=True, null=True, db_index=True)
     seconds_paused = models.PositiveIntegerField(default=0)
@@ -69,11 +73,16 @@ class Tracker(models.Model):
         return total
 
     @property
+    def state(self) -> str:
+        return self.timer_state
+
+    @property
     def is_paused(self) -> bool:
         """
         Determine whether or not this entry is paused
         """
-        return bool(self.pause_time)
+        # return bool(self.pause_time)
+        return self.timer_state == TIMER_STATE[0][0]
 
     def pause(self) -> None:
         """
@@ -81,6 +90,7 @@ class Tracker(models.Model):
         """
         if not self.is_paused:
             self.pause_time = timezone.now()
+            self.timer_state = TIMER_STATE[0][0]
 
     def unpause(self, date=None) -> None:
         if self.is_paused:
@@ -89,6 +99,7 @@ class Tracker(models.Model):
             delta = date - self.pause_time
             self.seconds_paused += delta.seconds
             self.pause_time = None
+            self.timer_state = TIMER_STATE[1][0]
 
     def toggle_paused(self) -> None:
         """
