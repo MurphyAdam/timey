@@ -102,6 +102,8 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
+    # Use application/json instead of multipart/form-data requests in tests.
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
 # site id as stated in the docs:
