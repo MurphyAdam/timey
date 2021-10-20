@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework import authentication
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from timey.permissions import IsOwnerOrAdminOrReadOnly
 from .models import User
 from .serializers import UserSerializer
 
@@ -11,12 +12,8 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     actions for the Users viewset. It is only available to 
     authenticated admin users.
     """
-    authentication_classes = [
-        authentication.TokenAuthentication,
-        authentication.SessionAuthentication
-    ]
 
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated, IsOwnerOrAdminOrReadOnly]
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
