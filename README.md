@@ -1,7 +1,14 @@
 # Timey multi-user, multi-project time tracking and project management.
 
 This is a simple multi-user, multi-project time tracking and project management with written in Django, DRF.
-Interactions through API.
+Interactions through API. 
+
+## Demo
+
+The below demo is hosted on Heroku, and is using a PostgreSQL database instead of an SQLITE 
+file database because of the ephemeral nature of the Heroku filesystem.
+
+https://timey-management.herokuapp.com/
 
 ## Requirments
 
