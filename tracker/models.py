@@ -34,7 +34,7 @@ class Tracker(models.Model):
         start = self.start_time
         end = self.end_time
         if not end:
-            if self.is_paused:
+            if bool(self.pause_time):
                 end = self.pause_time
             else:
                 end = timezone.now()
